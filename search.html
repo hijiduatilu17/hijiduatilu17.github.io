@@ -3,57 +3,24 @@ layout: null
 permalink: /search
 ---
 
-{% assign raw_query = page.query | default: "" %}
-{% if raw_query == "" and site.search_query %}
-  {% assign raw_query = site.search_query %}
-{% endif %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="content-language" content="en">
-    <meta name="target" content="global">
-    <meta name="audience" content="all">
-    
-    <!-- Robots -->
     <meta name="robots" content="index, follow">
-    <meta name="googlebot" content="index, follow">
-    
-    <!-- Canonical -->
     <link rel="canonical" href="{{ site.url }}/search">
     
-    <!-- Dynamic Title -->
-    <title>
-        {% if raw_query != "" %}
-            {% if raw_query contains "leak" or raw_query contains "leaked" or raw_query contains "leaks" %}
-                {{ raw_query }} - Exclusive Leaked Content - {{ site.title }}
-            {% elsif raw_query contains "video" or raw_query contains "videos" %}
-                {{ raw_query }} - Video Collection - {{ site.title }}
-            {% elsif raw_query contains "photo" or raw_query contains "photos" or raw_query contains "gallery" %}
-                {{ raw_query }} - Photo Gallery - {{ site.title }}
-            {% elsif raw_query contains "bio" or raw_query contains "biodata" or raw_query contains "biography" %}
-                {{ raw_query }} - Biography & Personal Info - {{ site.title }}
-            {% else %}
-                {{ raw_query }} - Exclusive Content & Media - {{ site.title }}
-            {% endif %}
-        {% else %}
-            Search Exclusive Content - {{ site.title }}
-        {% endif %}
-    </title>
+    <!-- Title akan di-update oleh JavaScript -->
+    <title id="dynamic-title">Search - {{ site.title }}</title>
     
-    <!-- Meta Description -->
-    {% if raw_query != "" %}
-    <meta name="description" content="Find exclusive {{ raw_query }} content, leaked photos, videos, gallery, and personal bio. Updated collection of {{ raw_query }} exclusive media.">
-    {% endif %}
+    <!-- Meta Description akan di-update oleh JavaScript -->
+    <meta id="dynamic-description" name="description" content="Search exclusive content on {{ site.title }}">
     
-    <!-- Important Links -->
     <link rel="home" href="{{ site.url }}/">
-    <link rel="sitemap" href="{{ site.url }}/sitemap.xml" type="application/xml">
-    <link rel="alternate" href="{{ site.url }}/feed.xml" type="application/rss+xml" title="RSS Feed">
+    <link rel="sitemap" href="{{ site.url }}/sitemap.xml">
     
-    <!-- Minimal CSS -->
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
         h1 { color: #333; }
@@ -62,182 +29,67 @@ permalink: /search
         section { margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 5px; }
         ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
         li { background: #fff; padding: 8px 15px; border-radius: 20px; border: 1px solid #ddd; }
-        hr { border: none; border-top: 1px solid #eee; margin: 20px 0; }
+        .hidden { display: none; }
+        #query-display { font-weight: bold; }
     </style>
 </head>
 <body>
     <main>
-        <!-- H1 -->
-        <h1>
-            {% if raw_query != "" %}
-                {% if raw_query contains "leak" or raw_query contains "leaked" or raw_query contains "leaks" %}
-                    {{ raw_query }} - Exclusive Leaked Content
-                {% elsif raw_query contains "video" or raw_query contains "videos" %}
-                    {{ raw_query }} - Video Collection
-                {% elsif raw_query contains "photo" or raw_query contains "photos" or raw_query contains "gallery" %}
-                    {{ raw_query }} - Photo Gallery
-                {% elsif raw_query contains "bio" or raw_query contains "biodata" or raw_query contains "biography" %}
-                    {{ raw_query }} - Biography & Personal Info
-                {% else %}
-                    {{ raw_query }} - Exclusive Content & Media
-                {% endif %}
-            {% else %}
-                Exclusive Content Search
-            {% endif %}
-        </h1>
+        <!-- H1 akan di-update JavaScript -->
+        <h1 id="main-heading">Exclusive Content Search</h1>
         
-        <!-- Intro Paragraph -->
-        {% if raw_query != "" %}
-            {% if raw_query contains "leak" or raw_query contains "leaked" or raw_query contains "leaks" %}
-                <p>Welcome to the exclusive collection of <strong>{{ raw_query }}</strong>. Here you'll find leaked photos, videos, and exclusive content that has been shared online. Our gallery is regularly updated with the latest leaked material.</p>
-            
-            {% elsif raw_query contains "video" or raw_query contains "videos" %}
-                <p>Browse the complete video collection of <strong>{{ raw_query }}</strong>. We have compiled all available videos, including exclusive clips, leaked footage, and viral moments.</p>
-            
-            {% elsif raw_query contains "photo" or raw_query contains "photos" or raw_query contains "gallery" %}
-                <p>View the full photo gallery of <strong>{{ raw_query }}</strong>. High-quality images, leaked photos, and exclusive pictures all in one place. Updated daily with new content.</p>
-            
-            {% elsif raw_query contains "bio" or raw_query contains "biodata" or raw_query contains "biography" %}
-                <p>Complete biography and personal details of <strong>{{ raw_query }}</strong>. Find information about age, height, personal life, career, and exclusive behind-the-scenes facts.</p>
-            
-            {% else %}
-                <p>Find all exclusive content about <strong>{{ raw_query }}</strong> including leaked photos, videos, gallery, and personal biography. Our collection is updated regularly with the latest material.</p>
-            {% endif %}
-        {% endif %}
+        <!-- Intro paragraph (akan di-update) -->
+        <div id="intro-paragraph"></div>
         
-        <!-- Search Results from Posts -->
-        {% if raw_query != "" %}
-            {% assign results = site.posts | where_exp: "post", "post.title contains raw_query or post.content contains raw_query or post.tags contains raw_query" %}
-            
-            {% if results.size > 0 %}
-                <h2>Latest {{ raw_query }} Content</h2>
-                <p>Found {{ results.size }} exclusive post{% if results.size > 1 %}s{% endif %}:</p>
-                
-                {% for post in results limit:10 %}
-                    <article>
-                        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-                        <p>{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
-                        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %d, %Y" }}</time>
-                        {% if post.tags %}
-                            {% for tag in post.tags %}
-                                <a href="/search?q={{ tag | url_encode }}" rel="tag">{{ tag }}</a>
-                            {% endfor %}
-                        {% endif %}
-                    </article>
-                    <hr/>
-                {% endfor %}
-            {% endif %}
-        {% endif %}
+        <!-- Search Results Section (akan diisi JavaScript) -->
+        <div id="search-results"></div>
         
-        <!-- Rich Content - All Variants (hanya tampil jika ada query) -->
-        {% if raw_query != "" %}
+        <!-- Template sections - akan ditampilkan jika ada query -->
+        <div id="content-sections" class="hidden">
             <!-- SECTION 1: Leak Variants -->
-            <section>
-                <h2>🔍 All {{ raw_query }} Leak Variants</h2>
-                <p>Browse exclusive content in different formats:</p>
-                <ul>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+leaked">{{ raw_query }} leaked (latest)</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+leak">{{ raw_query }} leak collection</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+leaks">{{ raw_query }} leaks archive</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+exclusive">{{ raw_query }} exclusive content</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+private">{{ raw_query }} private collection</a></li>
-                </ul>
+            <section id="leak-variants">
+                <h2>🔍 All <span class="query-placeholder"></span> Leak Variants</h2>
+                <ul id="leak-variants-list"></ul>
             </section>
             
             <!-- SECTION 2: Photo/Gallery -->
-            <section>
-                <h2>📸 {{ raw_query }} Photo Gallery</h2>
-                <ul>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+photos">{{ raw_query }} photos gallery</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+photo+leaked">{{ raw_query }} leaked photos</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+pictures">{{ raw_query }} pictures archive</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+images">{{ raw_query }} images collection</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+gallery">{{ raw_query }} complete gallery</a></li>
-                </ul>
+            <section id="photo-gallery">
+                <h2>📸 <span class="query-placeholder"></span> Photo Gallery</h2>
+                <ul id="photo-gallery-list"></ul>
             </section>
             
             <!-- SECTION 3: Video -->
-            <section>
-                <h2>🎥 {{ raw_query }} Video Collection</h2>
-                <ul>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+videos">{{ raw_query }} videos</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+video+leaked">{{ raw_query }} leaked videos</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+video+exclusive">{{ raw_query }} exclusive videos</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+footage">{{ raw_query }} footage archive</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+clips">{{ raw_query }} video clips</a></li>
-                </ul>
+            <section id="video-collection">
+                <h2>🎥 <span class="query-placeholder"></span> Video Collection</h2>
+                <ul id="video-collection-list"></ul>
             </section>
             
             <!-- SECTION 4: Bio -->
-            <section>
-                <h2>📋 {{ raw_query }} Biography & Info</h2>
-                <ul>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+bio">{{ raw_query }} bio</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+biodata">{{ raw_query }} biodata</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+biography">{{ raw_query }} biography</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+personal+details">{{ raw_query }} personal details</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+age">{{ raw_query }} age & height</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+boyfriend">{{ raw_query }} boyfriend/girlfriend</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+relationship">{{ raw_query }} relationship status</a></li>
-                </ul>
+            <section id="bio-info">
+                <h2>📋 <span class="query-placeholder"></span> Biography & Info</h2>
+                <ul id="bio-info-list"></ul>
             </section>
             
             <!-- SECTION 5: Social Media -->
-            <section>
-                <h2>🌐 {{ raw_query }} Social Media Content</h2>
-                <ul>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+instagram">{{ raw_query }} Instagram leaks</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+onlyfans">{{ raw_query }} OnlyFans leaks</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+twitter">{{ raw_query }} Twitter archive</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+tiktok">{{ raw_query }} TikTok videos</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+snapchat">{{ raw_query }} Snapchat leaks</a></li>
-                </ul>
+            <section id="social-media">
+                <h2>🌐 <span class="query-placeholder"></span> Social Media Content</h2>
+                <ul id="social-media-list"></ul>
             </section>
             
             <!-- SECTION 6: Trending -->
-            <section>
-                <h2>🔥 Trending {{ raw_query }} Searches</h2>
-                <ul>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+new+leaks">{{ raw_query }} new leaks 2026</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+latest">{{ raw_query }} latest content</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+uncensored">{{ raw_query }} uncensored</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+zip+download">{{ raw_query }} zip download</a></li>
-                    <li><a href="/search?q={{ raw_query | url_encode }}+mega">{{ raw_query }} mega link</a></li>
-                </ul>
+            <section id="trending">
+                <h2>🔥 Trending <span class="query-placeholder"></span> Searches</h2>
+                <ul id="trending-list"></ul>
             </section>
             
             <!-- SECTION 7: FAQ -->
-            <section>
-                <h2>❓ Frequently Asked Questions About {{ raw_query }}</h2>
-                
-                <div>
-                    <h3>Are there new {{ raw_query }} leaks today?</h3>
-                    <p>We regularly update our collection with the latest {{ raw_query }} leaked content. Check the "new leaks" section above for the most recent updates.</p>
-                </div>
-                
-                <div>
-                    <h3>Where can I find {{ raw_query }} leaked videos?</h3>
-                    <p>Visit our <a href="/search?q={{ raw_query | url_encode }}+videos">video collection</a> section for all leaked videos, or check specific platforms like <a href="/search?q={{ raw_query | url_encode }}+onlyfans">OnlyFans leaks</a>.</p>
-                </div>
-                
-                <div>
-                    <h3>Is {{ raw_query }} leaked photo gallery real?</h3>
-                    <p>Our gallery contains leaked photos that have been shared online. We verify content before adding to our <a href="/search?q={{ raw_query | url_encode }}+gallery">official gallery</a>.</p>
-                </div>
-                
-                <div>
-                    <h3>How to download all {{ raw_query }} leaks?</h3>
-                    <p>Check our <a href="/search?q={{ raw_query | url_encode }}+zip+download">zip download section</a> for complete collections and mega links.</p>
-                </div>
-                
-                <div>
-                    <h3>What is {{ raw_query }} real name and bio?</h3>
-                    <p>Find complete <a href="/search?q={{ raw_query | url_encode }}+bio">biography and personal details</a> including age, height, and relationship status.</p>
-                </div>
+            <section id="faq">
+                <h2>❓ Frequently Asked Questions About <span class="query-placeholder"></span></h2>
+                <div id="faq-content"></div>
             </section>
-        {% endif %}
+        </div>
         
-        <!-- Popular Categories (tetap tampil meskipun tanpa query) -->
+        <!-- Popular Categories (tetap tampil) -->
         <section>
             <h2>Popular Leak Categories</h2>
             <ul>
@@ -250,48 +102,175 @@ permalink: /search
         </section>
     </main>
     
-    <!-- Schema.org -->
-    {% if raw_query != "" %}
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        "name": "{{ raw_query }} - Exclusive Content",
-        "about": {
-            "@type": "Thing",
-            "name": "{{ raw_query }}"
-        }
-    }
-    </script>
-    {% endif %}
-    
-    <!-- JavaScript untuk mengambil query dari URL /search?q=query -->
-    <script>
-    (function() {
-        // Get query from URL (supports /search?q=query format)
-        const urlParams = new URLSearchParams(window.location.search);
-        let query = urlParams.get('q');
-        
-        if (query) {
-            // Update page title if needed
-            if (!document.title.toLowerCase().includes(query.toLowerCase())) {
-                // Title already has query from Liquid, but this is fallback
-            }
-            
-            // You could add more dynamic behavior here if needed
-            console.log('Search query:', query);
-        }
-    })();
-    </script>
-    
-    <!-- Hidden navigation untuk bots -->
+    <!-- Hidden navigation for bots -->
     <div style="display:none;">
         <a href="/">Home</a>
         <a href="/search?q=leaks">All Leaks</a>
-        <a href="/search?q=videos">Videos</a>
-        <a href="/search?q=photos">Photos</a>
         <a href="/sitemap.xml">Sitemap</a>
-        <a href="/feed.xml">RSS</a>
     </div>
+    
+    <script>
+    (function() {
+        // Get query from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        let query = urlParams.get('q');
+        
+        if (!query) {
+            // Tidak ada query, tampilkan halaman default
+            document.getElementById('main-heading').textContent = 'Exclusive Content Search';
+            return;
+        }
+        
+        // Decode query
+        query = decodeURIComponent(query.replace(/\+/g, ' '));
+        
+        // Update title
+        document.title = query + ' - Exclusive Content - {{ site.title }}';
+        
+        // Update meta description
+        document.querySelector('meta[name="description"]').setAttribute('content', 
+            'Find exclusive ' + query + ' content, leaked photos, videos, gallery, and personal bio.');
+        
+        // Update H1 berdasarkan tipe query
+        const heading = document.getElementById('main-heading');
+        if (query.includes('leak') || query.includes('leaked') || query.includes('leaks')) {
+            heading.textContent = query + ' - Exclusive Leaked Content';
+        } else if (query.includes('video') || query.includes('videos')) {
+            heading.textContent = query + ' - Video Collection';
+        } else if (query.includes('photo') || query.includes('photos') || query.includes('gallery')) {
+            heading.textContent = query + ' - Photo Gallery';
+        } else if (query.includes('bio') || query.includes('biodata') || query.includes('biography')) {
+            heading.textContent = query + ' - Biography & Personal Info';
+        } else {
+            heading.textContent = query + ' - Exclusive Content & Media';
+        }
+        
+        // Update intro paragraph
+        const intro = document.getElementById('intro-paragraph');
+        if (query.includes('leak') || query.includes('leaked') || query.includes('leaks')) {
+            intro.innerHTML = '<p>Welcome to the exclusive collection of <strong>' + query + '</strong>. Here you\'ll find leaked photos, videos, and exclusive content that has been shared online.</p>';
+        } else if (query.includes('video') || query.includes('videos')) {
+            intro.innerHTML = '<p>Browse the complete video collection of <strong>' + query + '</strong>. We have compiled all available videos, including exclusive clips, leaked footage, and viral moments.</p>';
+        } else if (query.includes('photo') || query.includes('photos') || query.includes('gallery')) {
+            intro.innerHTML = '<p>View the full photo gallery of <strong>' + query + '</strong>. High-quality images, leaked photos, and exclusive pictures all in one place.</p>';
+        } else if (query.includes('bio') || query.includes('biodata') || query.includes('biography')) {
+            intro.innerHTML = '<p>Complete biography and personal details of <strong>' + query + '</strong>. Find information about age, height, personal life, career, and exclusive behind-the-scenes facts.</p>';
+        } else {
+            intro.innerHTML = '<p>Find all exclusive content about <strong>' + query + '</strong> including leaked photos, videos, gallery, and personal biography.</p>';
+        }
+        
+        // Tampilkan content sections
+        document.getElementById('content-sections').classList.remove('hidden');
+        
+        // Update semua placeholder dengan query
+        document.querySelectorAll('.query-placeholder').forEach(el => {
+            el.textContent = query;
+        });
+        
+        // Generate links untuk setiap section
+        
+        // Leak variants
+        const leakList = document.getElementById('leak-variants-list');
+        leakList.innerHTML = `
+            <li><a href="/search?q=${encodeURIComponent(query)}+leaked">${query} leaked (latest)</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+leak">${query} leak collection</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+leaks">${query} leaks archive</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+exclusive">${query} exclusive content</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+private">${query} private collection</a></li>
+        `;
+        
+        // Photo gallery
+        const photoList = document.getElementById('photo-gallery-list');
+        photoList.innerHTML = `
+            <li><a href="/search?q=${encodeURIComponent(query)}+photos">${query} photos gallery</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+photo+leaked">${query} leaked photos</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+pictures">${query} pictures archive</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+images">${query} images collection</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+gallery">${query} complete gallery</a></li>
+        `;
+        
+        // Video collection
+        const videoList = document.getElementById('video-collection-list');
+        videoList.innerHTML = `
+            <li><a href="/search?q=${encodeURIComponent(query)}+videos">${query} videos</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+video+leaked">${query} leaked videos</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+video+exclusive">${query} exclusive videos</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+footage">${query} footage archive</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+clips">${query} video clips</a></li>
+        `;
+        
+        // Bio info
+        const bioList = document.getElementById('bio-info-list');
+        bioList.innerHTML = `
+            <li><a href="/search?q=${encodeURIComponent(query)}+bio">${query} bio</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+biodata">${query} biodata</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+biography">${query} biography</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+personal+details">${query} personal details</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+age">${query} age & height</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+boyfriend">${query} boyfriend/girlfriend</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+relationship">${query} relationship status</a></li>
+        `;
+        
+        // Social media
+        const socialList = document.getElementById('social-media-list');
+        socialList.innerHTML = `
+            <li><a href="/search?q=${encodeURIComponent(query)}+instagram">${query} Instagram leaks</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+onlyfans">${query} OnlyFans leaks</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+twitter">${query} Twitter archive</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+tiktok">${query} TikTok videos</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+snapchat">${query} Snapchat leaks</a></li>
+        `;
+        
+        // Trending
+        const trendingList = document.getElementById('trending-list');
+        trendingList.innerHTML = `
+            <li><a href="/search?q=${encodeURIComponent(query)}+new+leaks">${query} new leaks 2026</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+latest">${query} latest content</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+uncensored">${query} uncensored</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+zip+download">${query} zip download</a></li>
+            <li><a href="/search?q=${encodeURIComponent(query)}+mega">${query} mega link</a></li>
+        `;
+        
+        // FAQ
+        const faqContent = document.getElementById('faq-content');
+        faqContent.innerHTML = `
+            <div>
+                <h3>Are there new ${query} leaks today?</h3>
+                <p>We regularly update our collection with the latest ${query} leaked content. Check the "new leaks" section above.</p>
+            </div>
+            <div>
+                <h3>Where can I find ${query} leaked videos?</h3>
+                <p>Visit our <a href="/search?q=${encodeURIComponent(query)}+videos">video collection</a> section.</p>
+            </div>
+            <div>
+                <h3>Is ${query} leaked photo gallery real?</h3>
+                <p>Our gallery contains leaked photos that have been shared online. Check our <a href="/search?q=${encodeURIComponent(query)}+gallery">official gallery</a>.</p>
+            </div>
+            <div>
+                <h3>How to download all ${query} leaks?</h3>
+                <p>Check our <a href="/search?q=${encodeURIComponent(query)}+zip+download">zip download section</a>.</p>
+            </div>
+            <div>
+                <h3>What is ${query} real name and bio?</h3>
+                <p>Find complete <a href="/search?q=${encodeURIComponent(query)}+bio">biography and personal details</a>.</p>
+            </div>
+        `;
+        
+        // Schema markup
+        const schema = document.createElement('script');
+        schema.type = 'application/ld+json';
+        schema.textContent = JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": query + " - Exclusive Content",
+            "about": {
+                "@type": "Thing",
+                "name": query
+            }
+        });
+        document.head.appendChild(schema);
+        
+    })();
+    </script>
 </body>
 </html>
