@@ -3,6 +3,8 @@ layout: null
 permalink: /search
 ---
 
+{% assign site_name = site.title | default: "Exclusive Content" %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,264 +13,290 @@ permalink: /search
     <meta http-equiv="content-language" content="en">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ site.url }}/search">
-    
-    <!-- Title akan di-update oleh JavaScript -->
-    <title id="dynamic-title">Search - {{ site.title }}</title>
-    
-    <!-- Meta Description akan di-update oleh JavaScript -->
-    <meta id="dynamic-description" name="description" content="Search exclusive content on {{ site.title }}">
-    
     <link rel="home" href="{{ site.url }}/">
     <link rel="sitemap" href="{{ site.url }}/sitemap.xml">
     
+    <!-- Title akan di-update dengan JavaScript minimal -->
+    <title id="dynamic-title">Search - {{ site_name }}</title>
+    
+    <!-- Meta Description akan di-update -->
+    <meta id="dynamic-description" name="description" content="Search exclusive content on {{ site_name }}">
+    
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
-        h1 { color: #333; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; color: #333; }
+        h1 { color: #111; font-size: 2.2rem; margin-bottom: 10px; }
+        h2 { color: #222; font-size: 1.6rem; margin-top: 30px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        h3 { color: #333; font-size: 1.2rem; margin: 15px 0 5px; }
         a { color: #0066cc; text-decoration: none; }
         a:hover { text-decoration: underline; }
-        section { margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 5px; }
-        ul { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-        li { background: #fff; padding: 8px 15px; border-radius: 20px; border: 1px solid #ddd; }
+        .breadcrumb { color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+        .breadcrumb a { color: #0066cc; }
+        .quick-facts { background: #f5f5f5; padding: 15px 20px; border-radius: 8px; margin: 20px 0; }
+        .section { margin: 30px 0; }
+        .faq-item { margin: 20px 0; }
+        hr { border: none; border-top: 1px solid #eee; margin: 30px 0; }
+        ul { padding-left: 20px; }
+        li { margin: 5px 0; }
         .hidden { display: none; }
-        #query-display { font-weight: bold; }
+        #content-sections { display: block; }
+        .query-highlight { background: #f0f7ff; padding: 2px 5px; border-radius: 3px; }
     </style>
 </head>
 <body>
-    <main>
-        <!-- H1 akan di-update JavaScript -->
-        <h1 id="main-heading">Exclusive Content Search</h1>
-        
-        <!-- Intro paragraph (akan di-update) -->
-        <div id="intro-paragraph"></div>
-        
-        <!-- Search Results Section (akan diisi JavaScript) -->
-        <div id="search-results"></div>
-        
-        <!-- Template sections - akan ditampilkan jika ada query -->
-        <div id="content-sections" class="hidden">
-            <!-- SECTION 1: Leak Variants -->
-            <section id="leak-variants">
-                <h2>🔍 All <span class="query-placeholder"></span> Leak Variants</h2>
-                <ul id="leak-variants-list"></ul>
-            </section>
-            
-            <!-- SECTION 2: Photo/Gallery -->
-            <section id="photo-gallery">
-                <h2>📸 <span class="query-placeholder"></span> Photo Gallery</h2>
-                <ul id="photo-gallery-list"></ul>
-            </section>
-            
-            <!-- SECTION 3: Video -->
-            <section id="video-collection">
-                <h2>🎥 <span class="query-placeholder"></span> Video Collection</h2>
-                <ul id="video-collection-list"></ul>
-            </section>
-            
-            <!-- SECTION 4: Bio -->
-            <section id="bio-info">
-                <h2>📋 <span class="query-placeholder"></span> Biography & Info</h2>
-                <ul id="bio-info-list"></ul>
-            </section>
-            
-            <!-- SECTION 5: Social Media -->
-            <section id="social-media">
-                <h2>🌐 <span class="query-placeholder"></span> Social Media Content</h2>
-                <ul id="social-media-list"></ul>
-            </section>
-            
-            <!-- SECTION 6: Trending -->
-            <section id="trending">
-                <h2>🔥 Trending <span class="query-placeholder"></span> Searches</h2>
-                <ul id="trending-list"></ul>
-            </section>
-            
-            <!-- SECTION 7: FAQ -->
-            <section id="faq">
-                <h2>❓ Frequently Asked Questions About <span class="query-placeholder"></span></h2>
-                <div id="faq-content"></div>
-            </section>
-        </div>
-        
-        <!-- Popular Categories (tetap tampil) -->
-        <section>
-            <h2>Popular Leak Categories</h2>
-            <ul>
-                <li><a href="/search?q=celebrity+leaks">Celebrity Leaks</a></li>
-                <li><a href="/search?q=onlyfans+leaks">OnlyFans Leaks</a></li>
-                <li><a href="/search?q=video+leaks">Video Leaks</a></li>
-                <li><a href="/search?q=photo+gallery">Photo Gallery</a></li>
-                <li><a href="/search?q=exclusive+content">Exclusive Content</a></li>
-            </ul>
-        </section>
-    </main>
-    
-    <!-- Hidden navigation for bots -->
-    <div style="display:none;">
-        <a href="/">Home</a>
-        <a href="/search?q=leaks">All Leaks</a>
-        <a href="/sitemap.xml">Sitemap</a>
+    <!-- Breadcrumb Template -->
+    <div class="breadcrumb" id="breadcrumb">
+        <a href="/">Home</a> › <a href="/search">People</a> › <span id="breadcrumb-name">Search</span>
     </div>
     
+    <!-- H1 Template -->
+    <h1 id="main-heading">Exclusive Content Search</h1>
+    
+    <!-- Quick Facts Template (akan ditampilkan jika ada query) -->
+    <div class="quick-facts" id="quick-facts" style="display: none;">
+        <h2>About <span id="quick-facts-name"></span></h2>
+        <p>
+            <strong>Known as:</strong> Public Figure • 
+            <strong>Profession:</strong> Entertainer/Artist • 
+            <strong>Active years:</strong> Career period • 
+            <strong>Popular for:</strong> Work and public presence • 
+            <strong>Social media:</strong> Active on multiple platforms
+        </p>
+        <p><em>Complete biography and personal details available in the section below.</em></p>
+    </div>
+    
+    <!-- Intro Template -->
+    <div id="intro-paragraph" class="section" style="display: none;"></div>
+    
+    <!-- Semua konten akan ditampilkan jika ada query -->
+    <div id="content-sections">
+        {% comment %}
+        Semua konten di bawah ini akan selalu ada di HTML,
+        tapi akan ditampilkan/sembunyikan berdasarkan query menggunakan CSS/JS minimal
+        {% endcomment %}
+        
+        <!-- Fan Searches Section -->
+        <div id="fan-searches" class="section template-section">
+            <h2>Most Searched <span class="query-placeholder">Content</span></h2>
+            <p>Fans searching for <strong class="query-placeholder"></strong> typically look for 
+            <a href="#" class="dynamic-link" data-variant="leaked">leaked</a> material, 
+            <a href="#" class="dynamic-link" data-variant="photos">photo galleries</a>, 
+            <a href="#" class="dynamic-link" data-variant="videos">video collections</a>, and 
+            <a href="#" class="dynamic-link" data-variant="bio">personal biography</a>. 
+            Others seek <a href="#" class="dynamic-link" data-variant="exclusive">exclusive content</a> 
+            from platforms like <a href="#" class="dynamic-link" data-variant="onlyfans">OnlyFans</a>, 
+            <a href="#" class="dynamic-link" data-variant="instagram">Instagram</a>, and 
+            <a href="#" class="dynamic-link" data-variant="tiktok">TikTok</a>.</p>
+        </div>
+        
+        <!-- Photo Gallery Section -->
+        <div id="photo-section" class="section template-section">
+            <h2><span class="query-placeholder"></span> Photo Gallery</h2>
+            <p>The <strong><span class="query-placeholder"></span> photo archive</strong> includes 
+            <a href="#" class="dynamic-link" data-variant="photos">photos</a> from throughout 
+            her career, including <a href="#" class="dynamic-link" data-variant="professional photoshoot">professional photoshoots</a>, 
+            <a href="#" class="dynamic-link" data-variant="candid">candid moments</a>, 
+            <a href="#" class="dynamic-link" data-variant="behind the scenes">behind-the-scenes shots</a>, 
+            and <a href="#" class="dynamic-link" data-variant="selfie">selfies</a>. Browse through 
+            <a href="#" class="dynamic-link" data-variant="gallery">complete galleries</a> and 
+            <a href="#" class="dynamic-link" data-variant="album">photo albums</a>.</p>
+            
+            <p>Popular collections include:
+            <a href="#" class="dynamic-link" data-variant="red carpet">red carpet</a>,
+            <a href="#" class="dynamic-link" data-variant="magazine">magazine shoots</a>,
+            <a href="#" class="dynamic-link" data-variant="beach">beach</a>,
+            <a href="#" class="dynamic-link" data-variant="bikini">bikini</a>,
+            <a href="#" class="dynamic-link" data-variant="workout">workout</a>.
+            </p>
+        </div>
+        
+        <!-- Video Archive Section -->
+        <div id="video-section" class="section template-section">
+            <h2><span class="query-placeholder"></span> Video Collection</h2>
+            <p>The <strong><span class="query-placeholder"></span> video archive</strong> includes 
+            <a href="#" class="dynamic-link" data-variant="videos">videos</a> from all stages, including 
+            <a href="#" class="dynamic-link" data-variant="performances">performances</a>,
+            <a href="#" class="dynamic-link" data-variant="interviews">interviews</a>,
+            <a href="#" class="dynamic-link" data-variant="behind the scenes footage">behind-the-scenes</a>,
+            and <a href="#" class="dynamic-link" data-variant="rare footage">rare footage</a>.</p>
+        </div>
+        
+        <!-- Exclusive Content Section -->
+        <div id="exclusive-section" class="section template-section">
+            <h2>Exclusive <span class="query-placeholder"></span> Content</h2>
+            <p>Beyond public appearances, various 
+            <a href="#" class="dynamic-link" data-variant="exclusive">exclusive content</a> has emerged, including
+            <a href="#" class="dynamic-link" data-variant="behind the scenes">behind-the-scenes</a>,
+            <a href="#" class="dynamic-link" data-variant="private">private moments</a>,
+            <a href="#" class="dynamic-link" data-variant="uncensored">uncensored photos</a>, and
+            <a href="#" class="dynamic-link" data-variant="rare">rare material</a>.</p>
+        </div>
+        
+        <!-- Platform Content Section -->
+        <div id="platform-section" class="section template-section">
+            <h2><span class="query-placeholder"></span> Across Platforms</h2>
+            <p>Content from various platforms:
+            <a href="#" class="dynamic-link" data-variant="instagram">Instagram</a>,
+            <a href="#" class="dynamic-link" data-variant="onlyfans">OnlyFans</a>,
+            <a href="#" class="dynamic-link" data-variant="twitter">Twitter</a>,
+            <a href="#" class="dynamic-link" data-variant="tiktok">TikTok</a>,
+            <a href="#" class="dynamic-link" data-variant="snapchat">Snapchat</a>,
+            <a href="#" class="dynamic-link" data-variant="telegram">Telegram</a>,
+            <a href="#" class="dynamic-link" data-variant="discord">Discord</a>.</p>
+        </div>
+        
+        <!-- Biography Section -->
+        <div id="bio-section" class="section template-section">
+            <h2>About <span class="query-placeholder"></span>: Biography</h2>
+            <p>Learn more through 
+            <a href="#" class="dynamic-link" data-variant="bio">biography</a>,
+            <a href="#" class="dynamic-link" data-variant="age">age</a>,
+            <a href="#" class="dynamic-link" data-variant="height">height</a>,
+            <a href="#" class="dynamic-link" data-variant="boyfriend">relationship</a>,
+            <a href="#" class="dynamic-link" data-variant="net worth">net worth</a> details.</p>
+        </div>
+        
+        <!-- Download Section -->
+        <div id="download-section" class="section template-section">
+            <h2>Download <span class="query-placeholder"></span> Collections</h2>
+            <p>Complete archives available:
+            <a href="#" class="dynamic-link" data-variant="zip download">ZIP</a>,
+            <a href="#" class="dynamic-link" data-variant="mega">Mega</a>,
+            <a href="#" class="dynamic-link" data-variant="google drive">Google Drive</a>,
+            <a href="#" class="dynamic-link" data-variant="mediafire">MediaFire</a>.</p>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div id="faq-section" class="section template-section">
+            <h2>Frequently Asked Questions About <span class="query-placeholder"></span></h2>
+            
+            <div class="faq-item">
+                <h3>What content is available about <span class="query-placeholder"></span>?</h3>
+                <p>Our archive contains <a href="#" class="dynamic-link" data-variant="photos">photos</a>, 
+                <a href="#" class="dynamic-link" data-variant="videos">videos</a>, 
+                <a href="#" class="dynamic-link" data-variant="bio">biography</a>, and 
+                <a href="#" class="dynamic-link" data-variant="exclusive">exclusive material</a>.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Where can I find <span class="query-placeholder"></span> photos?</h3>
+                <p>The <a href="#" class="dynamic-link" data-variant="photos">photo gallery</a> section has complete collections.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Are there videos of <span class="query-placeholder"></span>?</h3>
+                <p>Yes, our <a href="#" class="dynamic-link" data-variant="videos">video archive</a> includes performances and more.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>What exclusive content exists?</h3>
+                <p>Check the <a href="#" class="dynamic-link" data-variant="exclusive">exclusive section</a> for rare material.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>How can I learn about <span class="query-placeholder"></span>'s background?</h3>
+                <p>The <a href="#" class="dynamic-link" data-variant="bio">biography section</a> has all details.</p>
+            </div>
+        </div>
+        
+        <!-- Related Searches -->
+        <div id="related-section" class="section template-section">
+            <h2>You Might Also Like</h2>
+            <p>
+                <a href="/search?q=celebrity+leaks">Celebrity Leaks</a> •
+                <a href="/search?q=onlyfans+leaks">OnlyFans Leaks</a> •
+                <a href="/search?q=video+leaks">Video Leaks</a> •
+                <a href="/search?q=photo+gallery">Photo Gallery</a> •
+                <a href="/search?q=exclusive+content">Exclusive Content</a>
+            </p>
+        </div>
+        
+        <!-- About Archive -->
+        <div id="about-section" class="section">
+            <h2>About This Archive</h2>
+            <p>This page serves as a permanent, comprehensive resource. The collection continues to grow as new material becomes available.</p>
+        </div>
+    </div>
+    
+    <!-- Minimal JavaScript - Hanya untuk mengganti placeholder dan memperbaiki link -->
     <script>
     (function() {
-        // Get query from URL
+        // Ambil query dari URL
         const urlParams = new URLSearchParams(window.location.search);
-        let query = urlParams.get('q');
+        let rawQuery = urlParams.get('q');
         
-        if (!query) {
-            // Tidak ada query, tampilkan halaman default
-            document.getElementById('main-heading').textContent = 'Exclusive Content Search';
+        if (!rawQuery) {
+            // Tidak ada query, sembunyikan semua template sections
+            document.querySelectorAll('.template-section').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.getElementById('quick-facts').style.display = 'none';
+            document.getElementById('intro-paragraph').style.display = 'none';
             return;
         }
         
         // Decode query
-        query = decodeURIComponent(query.replace(/\+/g, ' '));
+        const query = decodeURIComponent(rawQuery.replace(/\+/g, ' ')).trim();
+        
+        // Fungsi sederhana untuk mendapatkan base name (ambil kata pertama sebagai nama)
+        // Ini pendekatan sederhana, bisa dikembangkan
+        const baseName = query.split(' ')[0]; // Ambil kata pertama sebagai nama
+        
+        // Update breadcrumb
+        document.getElementById('breadcrumb-name').textContent = baseName;
+        
+        // Update H1
+        document.getElementById('main-heading').textContent = baseName + ': Complete Profile, Exclusive Content & Media Archive';
         
         // Update title
-        document.title = query + ' - Exclusive Content - {{ site.title }}';
+        document.getElementById('dynamic-title').textContent = baseName + ' - Exclusive Content';
         
         // Update meta description
-        document.querySelector('meta[name="description"]').setAttribute('content', 
-            'Find exclusive ' + query + ' content, leaked photos, videos, gallery, and personal bio.');
+        document.getElementById('dynamic-description').setAttribute('content', 
+            'Find exclusive ' + baseName + ' content including leaked photos, videos, biography, and social media archives.');
         
-        // Update H1 berdasarkan tipe query
-        const heading = document.getElementById('main-heading');
-        if (query.includes('leak') || query.includes('leaked') || query.includes('leaks')) {
-            heading.textContent = query + ' - Exclusive Leaked Content';
-        } else if (query.includes('video') || query.includes('videos')) {
-            heading.textContent = query + ' - Video Collection';
-        } else if (query.includes('photo') || query.includes('photos') || query.includes('gallery')) {
-            heading.textContent = query + ' - Photo Gallery';
-        } else if (query.includes('bio') || query.includes('biodata') || query.includes('biography')) {
-            heading.textContent = query + ' - Biography & Personal Info';
-        } else {
-            heading.textContent = query + ' - Exclusive Content & Media';
-        }
+        // Tampilkan quick facts
+        document.getElementById('quick-facts').style.display = 'block';
+        document.getElementById('quick-facts-name').textContent = baseName;
         
         // Update intro paragraph
-        const intro = document.getElementById('intro-paragraph');
-        if (query.includes('leak') || query.includes('leaked') || query.includes('leaks')) {
-            intro.innerHTML = '<p>Welcome to the exclusive collection of <strong>' + query + '</strong>. Here you\'ll find leaked photos, videos, and exclusive content that has been shared online.</p>';
-        } else if (query.includes('video') || query.includes('videos')) {
-            intro.innerHTML = '<p>Browse the complete video collection of <strong>' + query + '</strong>. We have compiled all available videos, including exclusive clips, leaked footage, and viral moments.</p>';
-        } else if (query.includes('photo') || query.includes('photos') || query.includes('gallery')) {
-            intro.innerHTML = '<p>View the full photo gallery of <strong>' + query + '</strong>. High-quality images, leaked photos, and exclusive pictures all in one place.</p>';
-        } else if (query.includes('bio') || query.includes('biodata') || query.includes('biography')) {
-            intro.innerHTML = '<p>Complete biography and personal details of <strong>' + query + '</strong>. Find information about age, height, personal life, career, and exclusive behind-the-scenes facts.</p>';
-        } else {
-            intro.innerHTML = '<p>Find all exclusive content about <strong>' + query + '</strong> including leaked photos, videos, gallery, and personal biography.</p>';
-        }
+        document.getElementById('intro-paragraph').style.display = 'block';
+        document.getElementById('intro-paragraph').innerHTML = `
+            <p>Welcome to the most comprehensive collection of 
+            <strong>${baseName}</strong> content available online. Here you'll find everything from 
+            <a href="/search?q=${encodeURIComponent(baseName + ' photos')}">${baseName} photos</a> and 
+            <a href="/search?q=${encodeURIComponent(baseName + ' videos')}">videos</a> to 
+            <a href="/search?q=${encodeURIComponent(baseName + ' exclusive')}">exclusive content</a> and 
+            <a href="/search?q=${encodeURIComponent(baseName + ' bio')}">biographical information</a>.</p>
+        `;
         
-        // Tampilkan content sections
-        document.getElementById('content-sections').classList.remove('hidden');
-        
-        // Update semua placeholder dengan query
+        // Update semua placeholder dengan baseName
         document.querySelectorAll('.query-placeholder').forEach(el => {
-            el.textContent = query;
+            el.textContent = baseName;
         });
         
-        // Generate links untuk setiap section
-        
-        // Leak variants
-        const leakList = document.getElementById('leak-variants-list');
-        leakList.innerHTML = `
-            <li><a href="/search?q=${encodeURIComponent(query)}+leaked">${query} leaked (latest)</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+leak">${query} leak collection</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+leaks">${query} leaks archive</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+exclusive">${query} exclusive content</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+private">${query} private collection</a></li>
-        `;
-        
-        // Photo gallery
-        const photoList = document.getElementById('photo-gallery-list');
-        photoList.innerHTML = `
-            <li><a href="/search?q=${encodeURIComponent(query)}+photos">${query} photos gallery</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+photo+leaked">${query} leaked photos</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+pictures">${query} pictures archive</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+images">${query} images collection</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+gallery">${query} complete gallery</a></li>
-        `;
-        
-        // Video collection
-        const videoList = document.getElementById('video-collection-list');
-        videoList.innerHTML = `
-            <li><a href="/search?q=${encodeURIComponent(query)}+videos">${query} videos</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+video+leaked">${query} leaked videos</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+video+exclusive">${query} exclusive videos</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+footage">${query} footage archive</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+clips">${query} video clips</a></li>
-        `;
-        
-        // Bio info
-        const bioList = document.getElementById('bio-info-list');
-        bioList.innerHTML = `
-            <li><a href="/search?q=${encodeURIComponent(query)}+bio">${query} bio</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+biodata">${query} biodata</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+biography">${query} biography</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+personal+details">${query} personal details</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+age">${query} age & height</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+boyfriend">${query} boyfriend/girlfriend</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+relationship">${query} relationship status</a></li>
-        `;
-        
-        // Social media
-        const socialList = document.getElementById('social-media-list');
-        socialList.innerHTML = `
-            <li><a href="/search?q=${encodeURIComponent(query)}+instagram">${query} Instagram leaks</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+onlyfans">${query} OnlyFans leaks</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+twitter">${query} Twitter archive</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+tiktok">${query} TikTok videos</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+snapchat">${query} Snapchat leaks</a></li>
-        `;
-        
-        // Trending
-        const trendingList = document.getElementById('trending-list');
-        trendingList.innerHTML = `
-            <li><a href="/search?q=${encodeURIComponent(query)}+new+leaks">${query} new leaks 2026</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+latest">${query} latest content</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+uncensored">${query} uncensored</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+zip+download">${query} zip download</a></li>
-            <li><a href="/search?q=${encodeURIComponent(query)}+mega">${query} mega link</a></li>
-        `;
-        
-        // FAQ
-        const faqContent = document.getElementById('faq-content');
-        faqContent.innerHTML = `
-            <div>
-                <h3>Are there new ${query} leaks today?</h3>
-                <p>We regularly update our collection with the latest ${query} leaked content. Check the "new leaks" section above.</p>
-            </div>
-            <div>
-                <h3>Where can I find ${query} leaked videos?</h3>
-                <p>Visit our <a href="/search?q=${encodeURIComponent(query)}+videos">video collection</a> section.</p>
-            </div>
-            <div>
-                <h3>Is ${query} leaked photo gallery real?</h3>
-                <p>Our gallery contains leaked photos that have been shared online. Check our <a href="/search?q=${encodeURIComponent(query)}+gallery">official gallery</a>.</p>
-            </div>
-            <div>
-                <h3>How to download all ${query} leaks?</h3>
-                <p>Check our <a href="/search?q=${encodeURIComponent(query)}+zip+download">zip download section</a>.</p>
-            </div>
-            <div>
-                <h3>What is ${query} real name and bio?</h3>
-                <p>Find complete <a href="/search?q=${encodeURIComponent(query)}+bio">biography and personal details</a>.</p>
-            </div>
-        `;
-        
-        // Schema markup
-        const schema = document.createElement('script');
-        schema.type = 'application/ld+json';
-        schema.textContent = JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            "name": query + " - Exclusive Content",
-            "about": {
-                "@type": "Thing",
-                "name": query
+        // Update semua dynamic links
+        document.querySelectorAll('.dynamic-link').forEach(link => {
+            const variant = link.getAttribute('data-variant');
+            if (variant) {
+                link.href = `/search?q=${encodeURIComponent(baseName + ' ' + variant)}`;
             }
         });
-        document.head.appendChild(schema);
+        
+        // Tampilkan semua template sections
+        document.querySelectorAll('.template-section').forEach(el => {
+            el.style.display = 'block';
+        });
+        
+        // Deteksi tipe query untuk menyesuaikan H1 (opsional)
+        if (/leak|leaked|leaks/i.test(query)) {
+            document.getElementById('main-heading').textContent = baseName + ': Complete Leak Archive & Exclusive Collection';
+        } else if (/photo|photos|picture|gallery/i.test(query)) {
+            document.getElementById('main-heading').textContent = baseName + ': Complete Photo Gallery & Image Archive';
+        } else if (/video|videos|clip|footage/i.test(query)) {
+            document.getElementById('main-heading').textContent = baseName + ': Complete Video Collection & Footage';
+        } else if (/bio|biography|age|height/i.test(query)) {
+            document.getElementById('main-heading').textContent = baseName + ': Complete Biography & Personal Details';
+        }
         
     })();
     </script>
