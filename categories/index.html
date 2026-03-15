@@ -72,7 +72,6 @@ permalink: /categories/
             <!-- BREADCRUMB -->
             <div class="breadcrumb" id="breadcrumb">
                 <a href="/">Home</a> › 
-                <a href="/categories/">People</a> › 
                 <span id="breadcrumb-name"></span>
             </div>
             
@@ -103,7 +102,7 @@ permalink: /categories/
             </div>
             
             <div id="intro-platform" class="intro-varian hidden">
-                <p>Welcome to the <strong class="query-placeholder"></strong> platform content archive. This collection brings together all material from <a href="" class="dynamic-link" data-variant="instagram">Instagram</a>, <a href="" class="dynamic-link" data-variant="onlyfans">OnlyFans</a>, <a href="" class="dynamic-link" data-variant="twitter">Twitter</a>, and other platforms. Explore exclusive platform-specific content all in one place.</p>
+                <p>Welcome to the <strong class="query-placeholder"></strong> platform content archive. This collection brings together all material from <a href="" class="dynamic-link" data-variant="instagram">Instagram</a>, <a href="" class="dynamic-link" data-variant="facebook">facebook</a>, <a href="" class="dynamic-link" data-variant="twitter">Twitter</a>, and other platforms. Explore exclusive platform-specific content all in one place.</p>
             </div>
             
             <div id="intro-general" class="intro-varian hidden">
@@ -121,7 +120,7 @@ permalink: /categories/
                 <a href="" class="dynamic-link" data-variant="videos">video collections</a>, and 
                 <a href="" class="dynamic-link" data-variant="bio">personal biography</a>. Others seek 
                 <a href="" class="dynamic-link" data-variant="exclusive">exclusive content</a> from platforms like 
-                <a href="" class="dynamic-link" data-variant="onlyfans">OnlyFans</a>, 
+                <a href="" class="dynamic-link" data-variant="facebook">facebook</a>, 
                 <a href="" class="dynamic-link" data-variant="instagram">Instagram</a>, and 
                 <a href="" class="dynamic-link" data-variant="tiktok">TikTok</a>. Our archive covers all these areas comprehensively.</p>
             </section>
@@ -174,9 +173,9 @@ permalink: /categories/
                 <a href="" class="dynamic-link" data-variant="leaked+photos"><span class="query-placeholder"></span> leaked photos</a>, 
                 <a href="" class="dynamic-link" data-variant="leaked+videos"><span class="query-placeholder"></span> private videos</a>, and 
                 <a href="" class="dynamic-link" data-variant="exclusive+leaks"><span class="query-placeholder"></span> exclusive leaks</a>. Our collection includes 
-                <a href="" class="dynamic-link" data-variant="rare+leaks"><span class="query-placeholder"></span> rare leaks</a>, 
-                <a href="" class="dynamic-link" data-variant="unreleased"><span class="query-placeholder"></span> unreleased content</a>, and 
-                <a href="" class="dynamic-link" data-variant="confidential"><span class="query-placeholder"></span> confidential material</a>.</p>
+                <a href="" class="dynamic-link" data-variant="rare+leaks"><span class="query-placeholder"></span> hot</a>, 
+                <a href="" class="dynamic-link" data-variant="unreleased"><span class="query-placeholder"></span> sexy</a>, and 
+                <a href="" class="dynamic-link" data-variant="confidential"><span class="query-placeholder"></span> bikini</a>.</p>
                 
                 <p>Fans also search for <a href="" class="dynamic-link" data-variant="private+collection"><span class="query-placeholder"></span> private collections</a>, 
                 <a href="" class="dynamic-link" data-variant="archive"><span class="query-placeholder"></span> complete archives</a>, and 
@@ -191,7 +190,7 @@ permalink: /categories/
                 
                 <ul>
                     <li><a href="" class="dynamic-link" data-variant="instagram"><span class="query-placeholder"></span> Instagram content</a> – posts, stories, and shared moments</li>
-                    <li><a href="" class="dynamic-link" data-variant="onlyfans"><span class="query-placeholder"></span> OnlyFans content</a> – exclusive subscriber material</li>
+                    <li><a href="" class="dynamic-link" data-variant="facebook"><span class="query-placeholder"></span> facebook content</a> – exclusive subscriber material</li>
                     <li><a href="" class="dynamic-link" data-variant="twitter"><span class="query-placeholder"></span> Twitter/X archive</a> – tweets and interactions</li>
                     <li><a href="" class="dynamic-link" data-variant="tiktok"><span class="query-placeholder"></span> TikTok videos</a> – short-form content and trends</li>
                     <li><a href="" class="dynamic-link" data-variant="youtube"><span class="query-placeholder"></span> YouTube appearances</a> – interviews and features</li>
@@ -245,7 +244,7 @@ permalink: /categories/
                     <li><a href="/categories/?q=photo+archives">Photo archives</a></li>
                     <li><a href="/categories/?q=video+collections">Video collections</a></li>
                     <li><a href="/categories/?q=leaked+content">Leaked content</a></li>
-                    <li><a href="/categories/?q=onlyfans+leaks">OnlyFans leaks</a></li>
+                    <li><a href="/categories/?q=facebook+leaks">facebook leaks</a></li>
                 </ul>
             </section>
             
@@ -282,7 +281,10 @@ permalink: /categories/
                     <p>The <a href="" class="dynamic-link" data-variant="biography"><span class="query-placeholder"></span> biography section</a> provides comprehensive information.</p>
                 </div>
             </section>
-            
+            <hr />
+          <center>{% include /ads/gobloggugel/infinitvideogames.html %}
+</center>  
+            <hr />
             <!-- SECTION 10: About This Archive -->
             <section id="section-about">
                 <h2>About This <span class="query-placeholder"></span> Archive</h2>
@@ -342,13 +344,13 @@ permalink: /categories/
             queryType = 'video';
         } else if (queryLower.includes('bio') || queryLower.includes('biography') || queryLower.includes('age') || queryLower.includes('height')) {
             queryType = 'bio';
-        } else if (queryLower.includes('instagram') || queryLower.includes('onlyfans') || queryLower.includes('twitter') || queryLower.includes('tiktok')) {
+        } else if (queryLower.includes('instagram') || queryLower.includes('facebook') || queryLower.includes('twitter') || queryLower.includes('tiktok')) {
             queryType = 'platform';
         }
         
         // Update title
         let title;
-        if (queryType === 'leak') title = `${query} - Complete Leak Archive & Exclusive Collection`;
+        if (queryType === 'leak') title = `${query}`;
         else if (queryType === 'photo') title = `${query} - Complete Photo Gallery & Image Archive`;
         else if (queryType === 'video') title = `${query} - Complete Video Collection & Footage`;
         else if (queryType === 'bio') title = `${query} - Complete Biography & Personal Details`;
