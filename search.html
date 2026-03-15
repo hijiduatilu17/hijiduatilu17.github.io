@@ -10,16 +10,11 @@ permalink: /search
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="content-language" content="en">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{{ site.url }}/search">
+ 
+    <title id="dynamic-title">Search</title>
+    <meta id="dynamic-description" name="description" content="Search exclusive content">
     
-    <!-- Title akan di-update oleh JavaScript -->
-    <title id="dynamic-title">Search - {{ site.title }}</title>
-    
-    <!-- Meta Description akan di-update oleh JavaScript -->
-    <meta id="dynamic-description" name="description" content="Search exclusive content on {{ site.title }}">
-    
-    <link rel="home" href="{{ site.url }}/">
-    <link rel="sitemap" href="{{ site.url }}/sitemap.xml">
+  
     
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
@@ -35,13 +30,13 @@ permalink: /search
 </head>
 <body>
     <main>
-        <!-- H1 akan di-update JavaScript -->
+        
         <h1 id="main-heading">Exclusive Content Search</h1>
         
-        <!-- Intro paragraph (akan di-update) -->
+        
         <div id="intro-paragraph"></div>
         
-        <!-- Search Results Section (akan diisi JavaScript) -->
+        
         <div id="search-results"></div>
         
         <!-- Template sections - akan ditampilkan jika ada query -->
@@ -102,12 +97,7 @@ permalink: /search
         </section>
     </main>
     
-    <!-- Hidden navigation for bots -->
-    <div style="display:none;">
-        <a href="/">Home</a>
-        <a href="/search?q=leaks">All Leaks</a>
-        <a href="/sitemap.xml">Sitemap</a>
-    </div>
+    
     
     <script>
     (function() {
