@@ -1,6 +1,6 @@
 export async function onRequestGet(context) {
   const host = context.request.headers.get("host");
-
+ 
   const urls = [
 "/post/?q=natalie-roush-soles",
 "/post/?q=xianexyy-",
