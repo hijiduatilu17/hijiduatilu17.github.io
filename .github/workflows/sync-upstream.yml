@@ -1,19 +1,19 @@
-name: Sync Only gobloggugel Ads (Full Mirror)
+name: Mirror Upstream (Force Except Workflows)
 
 on:
   schedule:
-    - cron: "0 0 */4 * *"
+    - cron: "0 * * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  sync:
+  mirror:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout fork
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -24,19 +24,32 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Clone upstream (shallow)
+      - name: Save local workflows
         run: |
-          git clone --depth=1 https://github.com/nengmaya538/nengmaya538.github.io.git /tmp/upstream
+          mkdir -p /tmp/workflows
+          if [ -d ".github/workflows" ]; then
+            cp -r .github/workflows /tmp/workflows/
+          fi
 
-      - name: Sync folder with delete
+      - name: Add upstream
         run: |
-          rsync -av --delete /tmp/upstream/_includes/ads/gobloggugel/ ./_includes/ads/gobloggugel/
+          git remote add upstream https://github.com/nengmaya538/kahiji.git
+          git fetch upstream
 
-      - name: Commit changes
+      - name: Hard reset to upstream
         run: |
-          git add _includes/ads/gobloggugel/
-          git commit -m "Full sync gobloggugel ads (mirror)" || echo "No changes"
+          git reset --hard upstream/master
 
-      - name: Push
+      - name: Restore workflows
         run: |
-          git push origin master
+          rm -rf .github/workflows
+          if [ -d "/tmp/workflows/workflows" ]; then
+            mkdir -p .github
+            cp -r /tmp/workflows/workflows .github/
+          fi
+
+      - name: Force push to fork
+        run: |
+          git add .
+          git commit -m "Force sync except workflows" || echo "No changes"
+          git push origin master --force
