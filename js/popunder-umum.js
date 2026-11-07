@@ -4,7 +4,7 @@
   // ==================== DAFTAR URL (dipakai popunder & tabunder) ====================
   const DAFTAR_URL = [
     "https://xselebgram.blogspot.com/",
-    "https://t.co/VnmPbMU5bZv",
+    
 "https://t.co/4Vh7moPkg7",
 "https://t.co/3MO2jR8Rvc",
 "https://t.co/v3RTN03Cyd",
