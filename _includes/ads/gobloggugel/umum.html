@@ -136,24 +136,3 @@
 
 
 
-<!--ambil satu script acak-->
-<script>
-(function() {
-  const ads = [
-    '/js/ads/21.js',
-    '/js/ads/22.js',
-    '/js/ads/23.js',
-    '/js/ads/24.js',
-    '/js/ads/25.js'
-  ];
-
-  const random = Math.floor(Math.random() * ads.length);
-  const script = document.createElement('script');
-
-  script.src = ads[random];
-  document.body.appendChild(script);
-})();
-</script>
-
-
-<script src="/js/popunder-umum.js"></script>
