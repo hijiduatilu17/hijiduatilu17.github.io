@@ -1,14 +1,3 @@
-(function(){
-  var box=document.createElement("div");
+<div id="ads-pagesdev-bauval-09"></div>
 
-  box.style.textAlign="center";
-  box.innerHTML="<br><br><br<center><div data-banner-id=\"2028740\"></div></center>";
-
-  document.body.insertBefore(box,document.body.firstChild);
-
-  var s=document.createElement("script");
-  s.src="https://js.mbidadm.com/static/scripts.js";
-  s.async=true;
-  s.setAttribute("data-admpid","465916");
-  document.head.appendChild(s);
-})();
+<script>(function(){var h=location.hostname.toLowerCase();if(!h.endsWith(".pages.dev"))return;var e=document.getElementById("ads-pagesdev-bauval-09");if(!e)return;window.atOptions={key:"161b377c484f2dfcb8043e972ea72b07",format:"iframe",height:60,width:468,params:{}};var s=document.createElement("script");s.src="https://bauval.org/22/161b377c484f2dfcb8043e972ea72b07";e.appendChild(s)})();</script>
